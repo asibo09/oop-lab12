@@ -1,46 +1,49 @@
 package it.unibo.es1;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LogicsImpl implements Logics {
 
+	public List<Integer> values;
+
 	public LogicsImpl(int size) {
-		//TODO Auto-generated constructor stub
+		this.values = new ArrayList<>(Collections.nCopies(size, 0));
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'size'");
+		return this.values.size();
 	}
 
 	@Override
 	public List<Integer> values() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'values'");
+		return Collections.unmodifiableList(values);
 	}
 
 	@Override
 	public List<Boolean> enablings() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'enablings'");
+		return values.stream().map(x -> x < values.size()).toList();
 	}
 
 	@Override
 	public int hit(int elem) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'hit'");
+		int n = this.values.get(elem);
+		this.values.set(elem, ++n);
+		return n;
 	}
 
 	@Override
 	public String result() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'result'");
+		return this.values.stream()
+			.map(String::valueOf)
+			.collect(Collectors.joining("|", "[", "]"));
 	}
 
 	@Override
 	public boolean toQuit() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'toQuit'");
+		return this.values.stream().allMatch(i -> i == this.values.get(0));
 	}
 }
